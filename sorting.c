@@ -69,33 +69,60 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    printf("Masukkan %d elemen array:\n", n);
+    // Seed random number generator
+    srand(time(NULL));
+
+    // Generate random float array
     for (int i = 0; i < n; i++) {
-        if (scanf("%f", &original[i]) != 1) {
-            printf("Input tidak valid pada elemen ke-%d\n", i + 1);
-            free(original);
-            free(temp);
-            return 1;
-        }
+        original[i] = (float)rand() / RAND_MAX * 100.0f; // Random float between 0 and 100
     }
 
-    printf("Data awal:\n");
+    printf("Data awal (acak):\n");
     print_array(original, n);
 
+    // Bubble Sort
     memcpy(temp, original, n * sizeof(float));
+    clock_t start = clock();
     bubble_sort(temp, n);
+    clock_t end = clock();
+    double bubble_time = ((double)(end - start)) / CLOCKS_PER_SEC;
     printf("Setelah Bubble Sort:\n");
     print_array(temp, n);
+    printf("Waktu Bubble Sort: %.6f detik\n", bubble_time);
 
+    // Selection Sort
     memcpy(temp, original, n * sizeof(float));
+    start = clock();
     selection_sort(temp, n);
+    end = clock();
+    double selection_time = ((double)(end - start)) / CLOCKS_PER_SEC;
     printf("Setelah Selection Sort:\n");
     print_array(temp, n);
+    printf("Waktu Selection Sort: %.6f detik\n", selection_time);
 
+    // Insertion Sort
     memcpy(temp, original, n * sizeof(float));
+    start = clock();
     insertion_sort(temp, n);
+    end = clock();
+    double insertion_time = ((double)(end - start)) / CLOCKS_PER_SEC;
     printf("Setelah Insertion Sort:\n");
     print_array(temp, n);
+    printf("Waktu Insertion Sort: %.6f detik\n", insertion_time);
+
+    // Perbandingan waktu
+    printf("\nPerbandingan Waktu Eksekusi:\n");
+    printf("Bubble Sort: %.6f detik\n", bubble_time);
+    printf("Selection Sort: %.6f detik\n", selection_time);
+    printf("Insertion Sort: %.6f detik\n", insertion_time);
+
+    // Analisis
+    printf("\nAnalisis:\n");
+    printf("Ketiga algoritma sorting ini memiliki kompleksitas waktu rata-rata O(n^2), sehingga untuk array besar, waktu eksekusi akan meningkat signifikan.\n");
+    printf("Bubble Sort biasanya paling lambat karena melakukan banyak pertukaran elemen.\n");
+    printf("Selection Sort sedikit lebih efisien karena hanya melakukan satu pertukaran per iterasi luar.\n");
+    printf("Insertion Sort bisa lebih cepat untuk array yang hampir terurut, karena hanya memindahkan elemen yang diperlukan.\n");
+    printf("Dalam kasus ini, dengan data acak, Insertion Sort mungkin menunjukkan performa yang lebih baik dibandingkan Bubble Sort.\n");
 
     free(original);
     free(temp);
